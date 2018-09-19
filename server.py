@@ -1,10 +1,11 @@
 from flask import Flask, request, send_from_directory
 from paperbroker import PaperBroker
 from paperbroker.orders import Order
+from paperbroker.adapters.quotes import TradierQuoteAdapter
 import ujson
 
 # initialize a PaperBroker with defaults
-broker = PaperBroker()
+broker = PaperBroker(quote_adapter=TradierQuoteAdapter)
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
