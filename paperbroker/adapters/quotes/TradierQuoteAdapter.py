@@ -4,6 +4,7 @@ from ...quotes import OptionQuote, Quote
 from .QuoteAdapter import QuoteAdapter
 # from googlefinance import getQuotes
 
+from kloudtrader.equities import data
 
 
 """
