@@ -10,7 +10,7 @@ from kloudtrader.equities import data
 """
     Get current prices from Google Finance
 """
-class GoogleFinanceQuoteAdapter(QuoteAdapter):
+class TradierQuoteAdapter(QuoteAdapter):
 
     def __init__(self):
         self._cache = {}
