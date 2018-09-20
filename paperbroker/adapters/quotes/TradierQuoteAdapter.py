@@ -1,9 +1,8 @@
 import arrow
-from ...assets import asset_factory, Option
+import kloudtrader
+from ...assets import Option, asset_factory
 from ...quotes import OptionQuote, Quote
 from .QuoteAdapter import QuoteAdapter
-# from googlefinance import getQuotes
-
 from kloudtrader.equities import data
 
 
@@ -34,16 +33,18 @@ class TradierQuoteAdapter(QuoteAdapter):
 
         else:
 
-            google_quotes = getQuotes(asset.symbol)
+            # google_quotes = getQuotes(asset.symbol)
+            tradier_quotes = data.quotes(asset.symbol) # Chetan please differentiate live and non-live quote functions more clearly or make it multi-dispatch
 
-            if google_quotes is None or len(google_quotes) == 0:
-                raise Exception("GoogleFinanceAdapter.get_quote: No quote found for {}".format(asset.symbol))
+            if tradier_quotes is None or len(tradier_quotes) == 0:
+                raise Exception("TradierAdapter.get_quote: No quote found for {}".format(asset.symbol))
 
-            last_trade = google_quotes[0].get('LastTradeWithCurrency', None)
-            if last_trade is None or last_trade == '' or last_trade == '-':
-                raise Exception("GoogleFinanceAdapter.get_quote: No quote found for {}".format(asset.symbol))
+            last_trade = tradier_quotes['quote'][0]['last']
+            if last_trade is None or last_trade == '': #or last_trade == '-'
+                raise Exception("TradierAdapter.get_quote: No quote found for {}".format(asset.symbol))
 
             return Quote(quote_date=arrow.now().format('YYYY-MM-DD'), asset=asset, bid=float(last_trade)-0.01, ask=float(last_trade)+0.01)
+
 
     def get_expiration_dates(self, underlying_asset=None):
         oc = OptionChain('NASDAQ:' + asset_factory(underlying_asset).symbol)
@@ -92,8 +93,9 @@ class OptionChain(object):
 
         params = {
             'q': q,
-            'output': 'json'
+            # 'output': 'json'
         }
+        print(params)
 
         data = self._get_content(OPTION_CHAIN_URL, params)
 

@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+paperbroker = {editable = true, git = "https://github.com/philipodonnell/paperbroker"}
+arrow = "==0.10.0"
+googlefinance = "==0.7"
+"ivolat3" = "==0.0.0"
+jsonpickle = "==0.9.4"
+ujson = "*"
+requests = "*"
+Flask = "==0.12.2"
+kloudtrader = {editable = true, git = "https://github.com/KloudTrader/kloudtrader.git"}
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
